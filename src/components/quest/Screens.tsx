@@ -54,7 +54,7 @@ export function Onboarding({ onStart }: { onStart: (name: string, mode: Mode) =>
                     className={`h-full w-full object-contain p-1 transition-transform duration-300 ${active ? "scale-110" : ""}`} />
                 </span>
                 <span className="mt-2 flex items-center gap-1 text-center text-[13px] font-bold leading-tight text-foreground">
-                  <Icon className="h-3.5 w-3.5 shrink-0 text-primary" /> {m.label.replace("Viajero en ", "")}
+                  <Icon className="h-3.5 w-3.5 shrink-0 text-primary" /> {m.id === "familia" ? "Familia" : m.label}
                 </span>
               </button>
             );
