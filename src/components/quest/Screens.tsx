@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {
-  Compass, Landmark, Users, Play, Lock, Check, SkipForward, Trophy,
+  Compass, Users, Play, Lock, Check, SkipForward, Trophy,
   Lightbulb, X, Ticket, Award, RotateCcw, Star, Loader2,
 } from "lucide-react";
 import { CHALLENGES, MODES, type Challenge, type Mode, type NodeStatus } from "@/lib/quest-data";
