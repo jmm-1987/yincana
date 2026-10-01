@@ -1,0 +1,2 @@
+ALTER TABLE public.quest_results DROP CONSTRAINT quest_results_mode_check;
+ALTER TABLE public.quest_results ADD CONSTRAINT quest_results_mode_check CHECK (mode IN ('individual', 'familia', 'explorador', 'arqueologo'));
