@@ -27,9 +27,6 @@ export function Onboarding({ onStart }: { onStart: (name: string, mode: Mode) =>
       <div className="relative h-64 overflow-hidden rounded-b-[2.5rem] shadow-soft">
         <img src={placeTeatro} alt="Teatro Romano de Mérida" width={1024} height={640} className="h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
-        <div className="absolute left-5 top-5 inline-flex items-center gap-2 rounded-full glass px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">
-          <MapPin className="h-3.5 w-3.5" /> Mérida · UNESCO
-        </div>
       </div>
 
       <div className="-mt-14 relative px-5">
