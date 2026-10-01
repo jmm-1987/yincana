@@ -12,10 +12,12 @@ import placeDiana from "@/assets/place-diana.jpg";
 import placeForo from "@/assets/place-foro.jpg";
 import placePuente from "@/assets/place-puente.jpg";
 import placeArco from "@/assets/place-arco.jpg";
+import placeMitreo from "@/assets/place-mitreo.jpg";
+import { MosaicPuzzle } from "./MosaicPuzzle";
 
 const modeIcon = { individual: Compass, familia: Users } as const;
 const modeImg = { individual: imgIndividual, familia: imgFamilia } as const;
-export const PLACE_IMG: Record<number, string> = { 1: placeTeatro, 2: placeDiana, 3: placeForo, 4: placePuente, 5: placeArco };
+export const PLACE_IMG: Record<number, string> = { 1: placeTeatro, 2: placeDiana, 3: placeForo, 4: placeMitreo, 5: placePuente, 6: placeArco };
 
 export function Onboarding({ onStart }: { onStart: (name: string, mode: Mode) => void }) {
   const [name, setName] = useState("");
@@ -199,6 +201,9 @@ export function ChallengeModal({
         <p className="mt-3 rounded-2xl bg-terra-soft p-4 text-[15px] leading-relaxed text-secondary-foreground">{c.story}</p>
 
         <p className="mt-5 font-bold text-foreground">{c.question}</p>
+        {c.kind === "Puzle" ? (
+          <MosaicPuzzle size={mode === "familia" ? 3 : 4} onSolved={() => setState("right")} />
+        ) : (
         <div className="mt-3 grid gap-2.5">
           {c.options.map((o, i) => {
             const isSel = sel === i;
@@ -215,6 +220,7 @@ export function ChallengeModal({
             );
           })}
         </div>
+        )}
 
         {hint ? (
           <p className="mt-3 flex gap-2 rounded-xl bg-sea-soft p-3 text-sm text-accent-foreground"><Lightbulb className="h-4 w-4 shrink-0" /> {c.hint}</p>
@@ -227,10 +233,10 @@ export function ChallengeModal({
         <div className="mt-5 grid gap-2.5">
           {state === "right" ? (
             <button onClick={() => onResolve("done")} className="press animate-scale-in flex items-center justify-center gap-2 rounded-2xl bg-success py-4 font-bold text-primary-foreground shadow-soft">
-              <Check className="h-5 w-5" /> ¡Correcto! Continuar
+              <Check className="h-5 w-5" /> {c.kind === "Puzle" ? "¡Mosaico completo! Continuar" : "¡Correcto! Continuar"}
             </button>
           ) : (
-            <button onClick={check} disabled={sel === null || state === "checking"}
+            c.kind === "Puzle" ? null : <button onClick={check} disabled={sel === null || state === "checking"}
               className="press flex items-center justify-center gap-2 rounded-2xl bg-gradient-primary py-4 font-bold text-primary-foreground shadow-glow disabled:opacity-50">
               {state === "checking" ? <><Loader2 className="h-5 w-5 animate-spin" /> {c.kind === "Comprobación" ? "Verificando ubicación…" : "Comprobando…"}</> : "Comprobar respuesta"}
             </button>

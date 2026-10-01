@@ -9,7 +9,7 @@ export const MODES: { id: Mode; label: string; desc: string; mult: number }[] = 
 export type Challenge = {
   id: number;
   name: string;
-  kind: "Test" | "Acertijo" | "Comprobación";
+  kind: "Test" | "Acertijo" | "Comprobación" | "Puzle";
   story: string;
   question: string;
   hint: string;
@@ -53,6 +53,17 @@ export const CHALLENGES: Challenge[] = [
   },
   {
     id: 4,
+    name: "Casa del Mitreo",
+    kind: "Puzle",
+    story:
+      "En esta casa romana se conserva el Mosaico Cosmológico, una representación del universo con dioses, vientos y estaciones. ¡Se ha desordenado! Recompónlo para seguir.",
+    question: "Toca dos piezas para intercambiarlas hasta completar el mosaico.",
+    hint: "Empieza por las esquinas y el borde trenzado.",
+    options: [],
+    answer: -1,
+  },
+  {
+    id: 5,
     name: "Alcazaba Árabe y Puente Romano",
     kind: "Comprobación",
     story:
@@ -63,7 +74,7 @@ export const CHALLENGES: Challenge[] = [
     answer: 1,
   },
   {
-    id: 5,
+    id: 6,
     name: "Arco de Trajano",
     kind: "Acertijo",
     story:
