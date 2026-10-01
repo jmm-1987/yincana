@@ -7,9 +7,9 @@ import { Confetti } from "@/components/quest/Confetti";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Emerita Quest: La Yincana de Mérida" },
+      { title: "Emerita Augusta: La Yincana de Mérida" },
       { name: "description", content: "Yincana para turistas por los monumentos romanos de Mérida: retos, puntos y recompensas." },
-      { property: "og:title", content: "Emerita Quest: La Yincana de Mérida" },
+      { property: "og:title", content: "Emerita Augusta: La Yincana de Mérida" },
       { property: "og:description", content: "Descubre Augusta Emerita a tu ritmo con 5 retos y un premio final." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

@@ -30,7 +30,7 @@ export function Onboarding({ onStart }: { onStart: (name: string, mode: Mode) =>
 
       <div className="-mt-14 relative px-5">
         <h1 className="text-[2.7rem] font-semibold leading-[1] text-foreground">
-          Emerita <span className="italic text-primary">Quest</span>
+          Emerita <span className="italic text-primary">Augusta</span>
         </h1>
         <p className="mt-3 text-lg text-muted-foreground">
           Descubre <strong className="text-foreground">Augusta Emerita</strong> a tu ritmo: 5 monumentos, 5 retos y un premio final.
