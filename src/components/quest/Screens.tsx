@@ -4,6 +4,7 @@ import {
   Lightbulb, X, Ticket, Award, RotateCcw, Star, Loader2,
 } from "lucide-react";
 import { CHALLENGES, MODES, type Challenge, type Mode, type NodeStatus } from "@/lib/quest-data";
+import { CommunityBoard, ShareResult } from "./Community";
 import imgExplorador from "@/assets/mode-explorador.png";
 import imgArqueologo from "@/assets/mode-arqueologo.png";
 import imgFamilia from "@/assets/mode-familia.png";
@@ -74,6 +75,8 @@ export function Onboarding({ onStart }: { onStart: (name: string, mode: Mode) =>
           className="press mt-7 flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-primary py-4 text-lg font-bold text-primary-foreground shadow-glow">
           <Play className="h-5 w-5 fill-current" /> Empezar la yincana
         </button>
+
+        <CommunityBoard />
       </div>
     </div>
   );
@@ -299,6 +302,8 @@ export function Summary({
           <p className="mt-1 font-mono text-sm tracking-widest opacity-90">EMERITA{discount}</p>
         </div>
       </div>
+
+      <ShareResult name={name} mode={mode} score={score} correct={ok} skipped={skipped} />
 
       <button onClick={onRestart} className="press mt-6 flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-border bg-card py-3.5 font-bold text-foreground">
         <RotateCcw className="h-5 w-5" /> Jugar de nuevo
