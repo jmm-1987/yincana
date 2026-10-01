@@ -248,8 +248,8 @@ export function ChallengeModal({
 }
 
 export function Summary({
-  name, mode, score, statuses, onRestart,
-}: { name: string; mode: Mode; score: number; statuses: NodeStatus[]; onRestart: () => void }) {
+  name, mode, score, statuses, duration, onRestart,
+}: { name: string; mode: Mode; score: number; statuses: NodeStatus[]; duration: number | null; onRestart: () => void }) {
   const ok = statuses.filter((s) => s === "done").length;
   const skipped = statuses.filter((s) => s === "skipped").length;
   const discount = ok >= 4 ? 20 : ok >= 2 ? 15 : 10;
@@ -299,7 +299,7 @@ export function Summary({
         </div>
       </div>
 
-      <ShareResult name={name} mode={mode} score={score} correct={ok} skipped={skipped} />
+      <ShareResult name={name} mode={mode} score={score} correct={ok} skipped={skipped} duration={duration} />
 
       <button onClick={onRestart} className="press mt-6 flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-border bg-card py-3.5 font-bold text-foreground">
         <RotateCcw className="h-5 w-5" /> Jugar de nuevo
