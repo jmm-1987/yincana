@@ -104,7 +104,7 @@ export function RouteMap({
         </svg>
         <ol className="relative grid gap-0">
           {CHALLENGES.map((c, i) => (
-            <MapNode key={c.id} c={c} i={i} status={statuses[i]} onOpen={() => onOpen(i)} />
+            <MapNode key={c.id} c={c} i={i} status={statuses[i] ?? "locked"} onOpen={() => onOpen(i)} />
           ))}
         </ol>
       </div>

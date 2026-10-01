@@ -54,7 +54,7 @@ function Index() {
         <Summary name={name} mode={mode} score={score} statuses={statuses} onRestart={() => setScreen("intro")} />
       )}
       {open !== null && (
-        <ChallengeModal key={open} c={CHALLENGES[open]} mode={mode} onClose={() => setOpen(null)} onResolve={(r) => resolve(open, r)} />
+        <ChallengeModal key={open} c={CHALLENGES[open]!} mode={mode} onClose={() => setOpen(null)} onResolve={(r) => resolve(open, r)} />
       )}
     </main>
   );
