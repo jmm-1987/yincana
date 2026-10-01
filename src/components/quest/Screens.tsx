@@ -1,10 +1,10 @@
 import { useState } from "react";
 import {
   Compass, Users, Play, Lock, Check, SkipForward, Trophy,
-  Lightbulb, X, Ticket, Award, RotateCcw, Star, Loader2,
+  Lightbulb, X, Ticket, Award, RotateCcw, Star, Loader2, Timer,
 } from "lucide-react";
 import { CHALLENGES, MODES, type Challenge, type Mode, type NodeStatus } from "@/lib/quest-data";
-import { CommunityBoard, ShareResult } from "./Community";
+import { CommunityBoard, ShareResult, formatDuration } from "./Community";
 import imgIndividual from "@/assets/mode-explorador.png";
 import imgFamilia from "@/assets/mode-familia.png";
 import placeTeatro from "@/assets/place-teatro.jpg";
@@ -262,6 +262,11 @@ export function Summary({
         </div>
         <h1 className="mt-4 text-3xl font-semibold text-foreground">¡Ave, {name}!</h1>
         <p className="text-muted-foreground">Has recorrido Augusta Emerita</p>
+        {duration != null && (
+          <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-sea-soft px-3 py-1.5 text-sm font-bold text-sea">
+            <Timer className="h-4 w-4" /> Tiempo total: {formatDuration(duration)}
+          </p>
+        )}
       </div>
 
       <div className="mt-6 grid grid-cols-3 gap-3">
