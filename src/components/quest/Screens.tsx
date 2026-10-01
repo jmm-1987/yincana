@@ -1,10 +1,10 @@
 import { useState } from "react";
 import {
   Compass, Users, Play, Lock, Check, SkipForward, Trophy,
-  Lightbulb, X, Ticket, Award, RotateCcw, Star, Loader2,
+  Lightbulb, X, Ticket, Award, RotateCcw, Star, Loader2, Timer,
 } from "lucide-react";
 import { CHALLENGES, MODES, type Challenge, type Mode, type NodeStatus } from "@/lib/quest-data";
-import { CommunityBoard, ShareResult } from "./Community";
+import { CommunityBoard, ShareResult, formatDuration } from "./Community";
 import imgIndividual from "@/assets/mode-explorador.png";
 import imgFamilia from "@/assets/mode-familia.png";
 import placeTeatro from "@/assets/place-teatro.jpg";
@@ -248,8 +248,8 @@ export function ChallengeModal({
 }
 
 export function Summary({
-  name, mode, score, statuses, onRestart,
-}: { name: string; mode: Mode; score: number; statuses: NodeStatus[]; onRestart: () => void }) {
+  name, mode, score, statuses, duration, onRestart,
+}: { name: string; mode: Mode; score: number; statuses: NodeStatus[]; duration: number | null; onRestart: () => void }) {
   const ok = statuses.filter((s) => s === "done").length;
   const skipped = statuses.filter((s) => s === "skipped").length;
   const discount = ok >= 4 ? 20 : ok >= 2 ? 15 : 10;
@@ -262,6 +262,11 @@ export function Summary({
         </div>
         <h1 className="mt-4 text-3xl font-semibold text-foreground">¡Ave, {name}!</h1>
         <p className="text-muted-foreground">Has recorrido Augusta Emerita</p>
+        {duration != null && (
+          <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-sea-soft px-3 py-1.5 text-sm font-bold text-sea">
+            <Timer className="h-4 w-4" /> Tiempo total: {formatDuration(duration)}
+          </p>
+        )}
       </div>
 
       <div className="mt-6 grid grid-cols-3 gap-3">
@@ -299,7 +304,7 @@ export function Summary({
         </div>
       </div>
 
-      <ShareResult name={name} mode={mode} score={score} correct={ok} skipped={skipped} />
+      <ShareResult name={name} mode={mode} score={score} correct={ok} skipped={skipped} duration={duration} />
 
       <button onClick={onRestart} className="press mt-6 flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-border bg-card py-3.5 font-bold text-foreground">
         <RotateCcw className="h-5 w-5" /> Jugar de nuevo

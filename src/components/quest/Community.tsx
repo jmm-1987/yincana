@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Crown, MessageCircle, Send, Star, Trophy, CheckCircle2 } from "lucide-react";
+import { Crown, MessageCircle, Send, Star, Trophy, CheckCircle2, Timer } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { MODES, type Mode } from "@/lib/quest-data";
 
@@ -8,14 +8,22 @@ const modeLabel = (m: string) =>
   m === "explorador" || m === "arqueologo" ? "Individual"
   : MODES.find((x) => x.id === m)?.label ?? m;
 
+export const formatDuration = (s: number | null) => {
+  if (s == null) return null;
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
+  return m > 0 ? `${m} min ${sec} s` : `${sec} s`;
+};
+
 function useRanking() {
   return useQuery({
     queryKey: ["quest-ranking"],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("quest_results")
-        .select("id, team_name, mode, score, correct")
+        .select("id, team_name, mode, score, correct, duration_seconds")
         .order("score", { ascending: false })
+        .order("duration_seconds", { ascending: true, nullsFirst: false })
         .order("created_at", { ascending: true })
         .limit(5);
       if (error) throw error;
@@ -61,7 +69,12 @@ export function CommunityBoard() {
               </span>
               <span className="min-w-0">
                 <span className="block truncate font-bold text-foreground">{r.team_name}</span>
-                <span className="block text-xs text-muted-foreground">{modeLabel(r.mode)} · {r.correct}/5 aciertos</span>
+                <span className="block text-xs text-muted-foreground">
+                  {modeLabel(r.mode)} · {r.correct}/5 aciertos
+                  {formatDuration(r.duration_seconds) && (
+                    <span className="inline-flex items-center gap-0.5"> · <Timer className="inline h-3 w-3" /> {formatDuration(r.duration_seconds)}</span>
+                  )}
+                </span>
               </span>
               <span className="font-display text-lg font-bold text-gold">{r.score}</span>
             </li>
@@ -96,7 +109,7 @@ export function CommunityBoard() {
   );
 }
 
-export function ShareResult(props: { name: string; mode: Mode; score: number; correct: number; skipped: number }) {
+export function ShareResult(props: { name: string; mode: Mode; score: number; correct: number; skipped: number; duration: number | null }) {
   const qc = useQueryClient();
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(5);
@@ -108,6 +121,7 @@ export function ShareResult(props: { name: string; mode: Mode; score: number; co
         score: props.score,
         correct: props.correct,
         skipped: props.skipped,
+        duration_seconds: props.duration,
         comment: comment.trim() ? comment.trim().slice(0, 300) : null,
         rating,
       });

@@ -1,0 +1,1 @@
+ALTER TABLE public.quest_results ADD COLUMN duration_seconds integer;

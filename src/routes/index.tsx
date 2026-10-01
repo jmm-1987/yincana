@@ -28,6 +28,8 @@ function Index() {
   const [score, setScore] = useState(0);
   const [open, setOpen] = useState<number | null>(null);
   const [confetti, setConfetti] = useState(0);
+  const [startedAt, setStartedAt] = useState<number | null>(null);
+  const [duration, setDuration] = useState<number | null>(null);
 
   const burst = () => setConfetti((n) => n + 1);
 
@@ -44,14 +46,14 @@ function Index() {
     <main className="mx-auto min-h-screen max-w-md">
       {confetti > 0 && <Confetti key={confetti} />}
       {screen === "intro" && (
-        <Onboarding onStart={(n, m) => { setName(n); setMode(m); setStatuses(initial()); setScore(0); setScreen("map"); }} />
+        <Onboarding onStart={(n, m) => { setName(n); setMode(m); setStatuses(initial()); setScore(0); setStartedAt(Date.now()); setDuration(null); setScreen("map"); }} />
       )}
       {screen === "map" && (
         <RouteMap name={name} score={score} statuses={statuses} onOpen={setOpen}
-          onFinish={() => { setScreen("summary"); burst(); }} />
+          onFinish={() => { setDuration(startedAt ? Math.max(1, Math.round((Date.now() - startedAt) / 1000)) : null); setScreen("summary"); burst(); }} />
       )}
       {screen === "summary" && (
-        <Summary name={name} mode={mode} score={score} statuses={statuses} onRestart={() => setScreen("intro")} />
+        <Summary name={name} mode={mode} score={score} statuses={statuses} duration={duration} onRestart={() => setScreen("intro")} />
       )}
       {open !== null && (
         <ChallengeModal key={open} c={CHALLENGES[open]!} mode={mode} onClose={() => setOpen(null)} onResolve={(r) => resolve(open, r)} />
