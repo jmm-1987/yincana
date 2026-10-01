@@ -19,6 +19,7 @@ export type Database = {
           comment: string | null
           correct: number
           created_at: string
+          duration_seconds: number | null
           id: string
           mode: string
           rating: number | null
@@ -30,6 +31,7 @@ export type Database = {
           comment?: string | null
           correct: number
           created_at?: string
+          duration_seconds?: number | null
           id?: string
           mode: string
           rating?: number | null
@@ -41,6 +43,7 @@ export type Database = {
           comment?: string | null
           correct?: number
           created_at?: string
+          duration_seconds?: number | null
           id?: string
           mode?: string
           rating?: number | null
