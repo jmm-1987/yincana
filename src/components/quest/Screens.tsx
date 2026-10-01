@@ -1,0 +1,294 @@
+import { useState } from "react";
+import {
+  Compass, Landmark, Users, Play, Lock, Check, SkipForward, MapPin, Trophy,
+  Lightbulb, X, Ticket, Award, RotateCcw, Star, Loader2,
+} from "lucide-react";
+import { CHALLENGES, MODES, type Challenge, type Mode, type NodeStatus } from "@/lib/quest-data";
+
+const modeIcon = { explorador: Compass, arqueologo: Landmark, familia: Users } as const;
+
+export function Onboarding({ onStart }: { onStart: (name: string, mode: Mode) => void }) {
+  const [name, setName] = useState("");
+  const [mode, setMode] = useState<Mode>("explorador");
+  return (
+    <div className="animate-fade-in flex min-h-screen flex-col px-5 pb-8 pt-10">
+      <div className="mb-2 inline-flex w-fit items-center gap-2 rounded-full bg-terra-soft px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">
+        <MapPin className="h-3.5 w-3.5" /> Mérida · Patrimonio UNESCO
+      </div>
+      <h1 className="mt-3 text-[2.6rem] font-semibold leading-[1.02] text-foreground">
+        Emerita <span className="italic text-primary">Quest</span>
+      </h1>
+      <p className="mt-3 text-lg text-muted-foreground">
+        Descubre <strong className="text-foreground">Augusta Emerita</strong> a tu ritmo: 5 monumentos, 5 retos y un premio final.
+      </p>
+
+      <div className="mt-8">
+        <p className="mb-3 text-sm font-bold text-foreground">Elige tu modo de juego</p>
+        <div className="grid gap-3">
+          {MODES.map((m) => {
+            const Icon = modeIcon[m.id];
+            const active = mode === m.id;
+            return (
+              <button
+                key={m.id}
+                onClick={() => setMode(m.id)}
+                className={`press flex items-center gap-4 rounded-2xl border-2 p-4 text-left ${
+                  active ? "border-primary bg-card shadow-glow" : "glass border-transparent"
+                }`}
+              >
+                <span className={`grid h-12 w-12 shrink-0 place-items-center rounded-xl ${active ? "bg-gradient-primary text-primary-foreground" : "bg-secondary text-primary"}`}>
+                  <Icon className="h-6 w-6" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block font-bold text-foreground">{m.label}</span>
+                  <span className="block text-sm text-muted-foreground">{m.desc}</span>
+                </span>
+                {active && <Check className="h-5 w-5 shrink-0 text-primary" />}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <label className="mt-6 block">
+        <span className="mb-2 block text-sm font-bold text-foreground">Nombre del explorador o equipo</span>
+        <input
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Ej: Los Legionarios"
+          className="glass w-full rounded-2xl px-4 py-4 text-base text-foreground outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-ring"
+        />
+      </label>
+
+      <button
+        onClick={() => onStart(name.trim() || "Viajero", mode)}
+        className="press mt-auto flex items-center justify-center gap-2 rounded-2xl bg-gradient-primary py-4 text-lg font-bold text-primary-foreground shadow-glow"
+        style={{ marginTop: "2rem" }}
+      >
+        <Play className="h-5 w-5 fill-current" /> Empezar la yincana
+      </button>
+    </div>
+  );
+}
+
+export function RouteMap({
+  name, score, statuses, onOpen, onFinish,
+}: {
+  name: string; score: number; statuses: NodeStatus[];
+  onOpen: (i: number) => void; onFinish: () => void;
+}) {
+  const finished = statuses.every((s) => s === "done" || s === "skipped");
+  const progress = statuses.filter((s) => s === "done" || s === "skipped").length;
+  return (
+    <div className="animate-fade-in min-h-screen px-5 pb-10 pt-6">
+      <header className="glass sticky top-3 z-10 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-2xl px-4 py-3">
+        <div className="min-w-0">
+          <p className="text-xs font-semibold text-muted-foreground">Ruta de</p>
+          <p className="truncate font-bold text-foreground">{name}</p>
+        </div>
+        <div className="flex items-center gap-1.5 rounded-full bg-gold-soft px-3 py-1.5 font-bold text-gold">
+          <Star className="h-4 w-4 fill-current" /> {score}
+        </div>
+        <div className="col-span-2 h-2 overflow-hidden rounded-full bg-muted">
+          <div className="h-full rounded-full bg-gradient-gold transition-all duration-700" style={{ width: `${(progress / 5) * 100}%` }} />
+        </div>
+      </header>
+
+      <h2 className="mt-6 text-2xl font-semibold text-foreground">Tu camino por Emerita</h2>
+      <p className="text-sm text-muted-foreground">{progress} de 5 paradas completadas</p>
+
+      <div className="relative mt-6">
+        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 500" preserveAspectRatio="none" aria-hidden>
+          <path d="M28 50 C 90 90, 90 110, 72 150 S 10 210, 28 250 S 90 310, 72 350 S 10 410, 28 450"
+            fill="none" stroke="var(--border)" strokeWidth="1.4" strokeDasharray="3 3" vectorEffect="non-scaling-stroke" style={{ strokeWidth: 4 }} />
+        </svg>
+        <ol className="relative grid gap-0">
+          {CHALLENGES.map((c, i) => (
+            <MapNode key={c.id} c={c} i={i} status={statuses[i] ?? "locked"} onOpen={() => onOpen(i)} />
+          ))}
+        </ol>
+      </div>
+
+      {finished && (
+        <button onClick={onFinish} className="press animate-scale-in mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-gold py-4 text-lg font-bold text-primary-foreground shadow-glow">
+          <Trophy className="h-5 w-5" /> Ver mis recompensas
+        </button>
+      )}
+    </div>
+  );
+}
+
+function MapNode({ c, i, status, onOpen }: { c: Challenge; i: number; status: NodeStatus; onOpen: () => void }) {
+  const left = i % 2 === 0;
+  const styles: Record<NodeStatus, string> = {
+    locked: "bg-muted text-muted-foreground",
+    available: "bg-gradient-primary text-primary-foreground animate-node-pulse",
+    done: "bg-success text-primary-foreground",
+    skipped: "bg-sea-soft text-sea",
+  };
+  const label: Record<NodeStatus, string> = {
+    locked: "Bloqueado", available: "Disponible", done: "Completado", skipped: "Saltado",
+  };
+  const icon = status === "locked" ? <Lock className="h-6 w-6" /> : status === "done" ? <Check className="h-7 w-7" strokeWidth={3} />
+    : status === "skipped" ? <SkipForward className="h-6 w-6" /> : <span className="font-display text-2xl font-bold">{i + 1}</span>;
+  return (
+    <li className={`flex h-[100px] items-center gap-3 ${left ? "flex-row pl-[10%]" : "flex-row-reverse pr-[10%]"}`}>
+      <button
+        disabled={status === "locked"}
+        onClick={onOpen}
+        aria-label={c.name}
+        className={`press grid h-16 w-16 shrink-0 place-items-center rounded-full border-4 border-card shadow-soft disabled:cursor-not-allowed ${styles[status]}`}
+      >
+        {icon}
+      </button>
+      <button disabled={status === "locked"} onClick={onOpen}
+        className={`glass press min-w-0 max-w-[60%] rounded-xl px-3 py-2 ${left ? "text-left" : "text-right"} ${status === "locked" ? "opacity-60" : ""}`}>
+        <span className="block text-sm font-bold leading-tight text-foreground">{c.name}</span>
+        <span className={`text-xs font-semibold ${status === "available" ? "text-primary" : status === "done" ? "text-success" : status === "skipped" ? "text-sea" : "text-muted-foreground"}`}>
+          {label[status]}
+        </span>
+      </button>
+    </li>
+  );
+}
+
+export function ChallengeModal({
+  c, mode, onClose, onResolve,
+}: {
+  c: Challenge; mode: Mode; onClose: () => void;
+  onResolve: (result: "done" | "skipped") => void;
+}) {
+  const [sel, setSel] = useState<number | null>(null);
+  const [state, setState] = useState<"idle" | "checking" | "right" | "wrong">("idle");
+  const [hint, setHint] = useState(mode === "familia");
+
+  const check = () => {
+    if (sel === null) return;
+    setState("checking");
+    setTimeout(() => setState(sel === c.answer ? "right" : "wrong"), c.kind === "Comprobación" ? 1100 : 450);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-foreground/30 backdrop-blur-sm animate-fade-in" onClick={onClose}>
+      <div onClick={(e) => e.stopPropagation()}
+        className="animate-sheet-up max-h-[92vh] w-full max-w-md overflow-y-auto rounded-t-3xl bg-card px-5 pb-6 pt-3 shadow-soft">
+        <div className="mx-auto mb-3 h-1.5 w-12 rounded-full bg-border" />
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <span className="rounded-full bg-gold-soft px-2.5 py-1 text-xs font-bold text-gold">Parada {c.id} · {c.kind}</span>
+            <h3 className="mt-2 text-2xl font-semibold leading-tight text-foreground">{c.name}</h3>
+          </div>
+          <button onClick={onClose} aria-label="Cerrar" className="press grid h-10 w-10 shrink-0 place-items-center rounded-full bg-secondary text-foreground">
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        <p className="mt-3 rounded-2xl bg-terra-soft p-4 text-[15px] leading-relaxed text-secondary-foreground">{c.story}</p>
+
+        <p className="mt-5 font-bold text-foreground">{c.question}</p>
+        <div className="mt-3 grid gap-2.5">
+          {c.options.map((o, i) => {
+            const isSel = sel === i;
+            const reveal = state === "right" || state === "wrong";
+            const cls = reveal && i === c.answer && state === "right" ? "border-success bg-success-soft"
+              : reveal && isSel && state === "wrong" ? "border-destructive bg-terra-soft"
+              : isSel ? "border-primary bg-terra-soft" : "border-border bg-card";
+            return (
+              <button key={o} disabled={state === "right"} onClick={() => { setSel(i); if (state === "wrong") setState("idle"); }}
+                className={`press flex items-center gap-3 rounded-xl border-2 px-4 py-3.5 text-left font-semibold text-foreground ${cls}`}>
+                <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-secondary text-sm">{String.fromCharCode(65 + i)}</span>
+                {o}
+              </button>
+            );
+          })}
+        </div>
+
+        {hint ? (
+          <p className="mt-3 flex gap-2 rounded-xl bg-sea-soft p-3 text-sm text-accent-foreground"><Lightbulb className="h-4 w-4 shrink-0" /> {c.hint}</p>
+        ) : (
+          <button onClick={() => setHint(true)} className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-sea"><Lightbulb className="h-4 w-4" /> Ver pista</button>
+        )}
+
+        {state === "wrong" && <p className="animate-fade-in mt-3 text-sm font-semibold text-destructive">¡Casi! Prueba otra opción o salta la prueba.</p>}
+
+        <div className="mt-5 grid gap-2.5">
+          {state === "right" ? (
+            <button onClick={() => onResolve("done")} className="press animate-scale-in flex items-center justify-center gap-2 rounded-2xl bg-success py-4 font-bold text-primary-foreground shadow-soft">
+              <Check className="h-5 w-5" /> ¡Correcto! Continuar
+            </button>
+          ) : (
+            <button onClick={check} disabled={sel === null || state === "checking"}
+              className="press flex items-center justify-center gap-2 rounded-2xl bg-gradient-primary py-4 font-bold text-primary-foreground shadow-glow disabled:opacity-50">
+              {state === "checking" ? <><Loader2 className="h-5 w-5 animate-spin" /> {c.kind === "Comprobación" ? "Verificando ubicación…" : "Comprobando…"}</> : "Comprobar respuesta"}
+            </button>
+          )}
+          {state !== "right" && (
+            <button onClick={() => onResolve("skipped")}
+              className="press flex items-center justify-center gap-2 rounded-2xl border-2 border-sea bg-sea-soft py-3.5 font-bold text-sea">
+              <SkipForward className="h-5 w-5" /> Saltar prueba / Pasar de fase
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function Summary({
+  name, mode, score, statuses, onRestart,
+}: { name: string; mode: Mode; score: number; statuses: NodeStatus[]; onRestart: () => void }) {
+  const ok = statuses.filter((s) => s === "done").length;
+  const skipped = statuses.filter((s) => s === "skipped").length;
+  const discount = ok >= 4 ? 20 : ok >= 2 ? 15 : 10;
+  const date = new Date().toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" });
+  return (
+    <div className="animate-fade-in min-h-screen px-5 pb-10 pt-10">
+      <div className="text-center">
+        <div className="mx-auto grid h-20 w-20 place-items-center rounded-full bg-gradient-gold text-primary-foreground shadow-glow animate-scale-in">
+          <Trophy className="h-10 w-10" />
+        </div>
+        <h1 className="mt-4 text-3xl font-semibold text-foreground">¡Ave, {name}!</h1>
+        <p className="text-muted-foreground">Has recorrido Augusta Emerita</p>
+      </div>
+
+      <div className="mt-6 grid grid-cols-3 gap-3">
+        {[
+          { v: ok, l: "Acertadas", c: "text-success" },
+          { v: skipped, l: "Saltadas", c: "text-sea" },
+          { v: score, l: "Puntos", c: "text-gold" },
+        ].map((s) => (
+          <div key={s.l} className="glass rounded-2xl p-3 text-center">
+            <p className={`font-display text-3xl font-bold ${s.c}`}>{s.v}</p>
+            <p className="text-xs font-semibold text-muted-foreground">{s.l}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="relative mt-6 overflow-hidden rounded-3xl border-2 border-gold bg-card p-6 text-center shadow-soft">
+        <Award className="mx-auto h-8 w-8 text-gold" />
+        <p className="mt-2 text-xs font-bold uppercase tracking-[0.2em] text-gold">Certificado de participación</p>
+        <p className="mt-3 text-sm text-muted-foreground">Se otorga a</p>
+        <p className="font-display text-3xl font-semibold italic text-primary">{name}</p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          por completar la yincana <strong className="text-foreground">Emerita Quest</strong> en modo {MODES.find((m) => m.id === mode)?.label}.
+        </p>
+        <p className="mt-4 text-xs text-muted-foreground">Mérida, {date}</p>
+      </div>
+
+      <div className="mt-5 flex items-stretch overflow-hidden rounded-3xl bg-gradient-primary text-primary-foreground shadow-glow">
+        <div className="grid w-24 shrink-0 place-items-center border-r-2 border-dashed border-primary-foreground/40">
+          <Ticket className="h-9 w-9" />
+        </div>
+        <div className="min-w-0 p-4">
+          <p className="text-xs font-bold uppercase tracking-wider opacity-90">Cupón de regalo</p>
+          <p className="font-display text-2xl font-bold">-{discount}% en tiendas del centro</p>
+          <p className="mt-1 font-mono text-sm tracking-widest opacity-90">EMERITA{discount}</p>
+        </div>
+      </div>
+
+      <button onClick={onRestart} className="press mt-6 flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-border bg-card py-3.5 font-bold text-foreground">
+        <RotateCcw className="h-5 w-5" /> Jugar de nuevo
+      </button>
+    </div>
+  );
+}
