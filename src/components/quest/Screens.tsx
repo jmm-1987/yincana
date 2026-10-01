@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {
   Compass, Users, Play, Lock, Check, SkipForward, Trophy,
-  Lightbulb, X, Ticket, Award, RotateCcw, Star, Loader2, Timer,
+  Lightbulb, X, Award, RotateCcw, Star, Loader2, Timer,
 } from "lucide-react";
 import { CHALLENGES, MODES, type Challenge, type Mode, type NodeStatus } from "@/lib/quest-data";
 import { CommunityBoard, ShareResult, formatDuration } from "./Community";
@@ -258,7 +258,6 @@ export function Summary({
 }: { name: string; mode: Mode; score: number; statuses: NodeStatus[]; duration: number | null; onRestart: () => void }) {
   const ok = statuses.filter((s) => s === "done").length;
   const skipped = statuses.filter((s) => s === "skipped").length;
-  const discount = ok >= 4 ? 20 : ok >= 2 ? 15 : 10;
   const date = new Date().toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" });
   return (
     <div className="animate-fade-in min-h-screen px-5 pb-10 pt-10">
@@ -299,16 +298,6 @@ export function Summary({
         <p className="mt-4 text-xs text-muted-foreground">Mérida, {date}</p>
       </div>
 
-      <div className="mt-5 flex items-stretch overflow-hidden rounded-3xl bg-gradient-primary text-primary-foreground shadow-glow">
-        <div className="grid w-24 shrink-0 place-items-center border-r-2 border-dashed border-primary-foreground/40">
-          <Ticket className="h-9 w-9" />
-        </div>
-        <div className="min-w-0 p-4">
-          <p className="text-xs font-bold uppercase tracking-wider opacity-90">Cupón de regalo</p>
-          <p className="font-display text-2xl font-bold">-{discount}% en tiendas del centro</p>
-          <p className="mt-1 font-mono text-sm tracking-widest opacity-90">EMERITA{discount}</p>
-        </div>
-      </div>
 
       <ShareResult name={name} mode={mode} score={score} correct={ok} skipped={skipped} duration={duration} />
 
