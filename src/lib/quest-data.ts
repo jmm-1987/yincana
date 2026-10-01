@@ -1,10 +1,9 @@
-export type Mode = "explorador" | "arqueologo" | "familia";
+export type Mode = "individual" | "familia";
 export type NodeStatus = "locked" | "available" | "done" | "skipped";
 
 export const MODES: { id: Mode; label: string; desc: string; mult: number }[] = [
-  { id: "explorador", label: "Explorador", desc: "Ritmo libre, 100 pts por prueba", mult: 1 },
-  { id: "arqueologo", label: "Arqueólogo", desc: "Más difícil, ×1.5 puntos", mult: 1.5 },
-  { id: "familia", label: "Viajero en familia", desc: "Con pistas para los peques", mult: 1 },
+  { id: "individual", label: "Individual", desc: "Ritmo libre, 100 pts por prueba", mult: 1 },
+  { id: "familia", label: "Familias", desc: "Con pistas para los peques", mult: 1 },
 ];
 
 export type Challenge = {

@@ -23,7 +23,7 @@ const initial = (): NodeStatus[] => CHALLENGES.map((_, i) => (i === 0 ? "availab
 function Index() {
   const [screen, setScreen] = useState<"intro" | "map" | "summary">("intro");
   const [name, setName] = useState("");
-  const [mode, setMode] = useState<Mode>("explorador");
+  const [mode, setMode] = useState<Mode>("individual");
   const [statuses, setStatuses] = useState<NodeStatus[]>(initial);
   const [score, setScore] = useState(0);
   const [open, setOpen] = useState<number | null>(null);
