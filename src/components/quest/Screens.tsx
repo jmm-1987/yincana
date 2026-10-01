@@ -30,7 +30,7 @@ export function Onboarding({ onStart }: { onStart: (name: string, mode: Mode) =>
 
       <div className="-mt-14 relative px-5">
         <h1 className="text-[2.7rem] font-semibold leading-[1] text-foreground">
-          Emerita <span className="italic text-primary">Quest</span>
+          Emerita <span className="italic text-primary">Augusta</span>
         </h1>
         <p className="mt-3 text-lg text-muted-foreground">
           Descubre <strong className="text-foreground">Augusta Emerita</strong> a tu ritmo: 5 monumentos, 5 retos y un premio final.
@@ -283,7 +283,7 @@ export function Summary({
         <p className="mt-3 text-sm text-muted-foreground">Se otorga a</p>
         <p className="font-display text-3xl font-semibold italic text-primary">{name}</p>
         <p className="mt-2 text-sm text-muted-foreground">
-          por completar la yincana <strong className="text-foreground">Emerita Quest</strong> en modo {MODES.find((m) => m.id === mode)?.label}.
+          por completar la yincana <strong className="text-foreground">Emerita Augusta</strong> en modo {MODES.find((m) => m.id === mode)?.label}.
         </p>
         <p className="mt-4 text-xs text-muted-foreground">Mérida, {date}</p>
       </div>
