@@ -5,8 +5,7 @@ import {
 } from "lucide-react";
 import { CHALLENGES, MODES, type Challenge, type Mode, type NodeStatus } from "@/lib/quest-data";
 import { CommunityBoard, ShareResult } from "./Community";
-import imgExplorador from "@/assets/mode-explorador.png";
-import imgArqueologo from "@/assets/mode-arqueologo.png";
+import imgIndividual from "@/assets/mode-explorador.png";
 import imgFamilia from "@/assets/mode-familia.png";
 import placeTeatro from "@/assets/place-teatro.jpg";
 import placeDiana from "@/assets/place-diana.jpg";
@@ -14,13 +13,13 @@ import placeForo from "@/assets/place-foro.jpg";
 import placePuente from "@/assets/place-puente.jpg";
 import placeArco from "@/assets/place-arco.jpg";
 
-const modeIcon = { explorador: Compass, arqueologo: Landmark, familia: Users } as const;
-const modeImg = { explorador: imgExplorador, arqueologo: imgArqueologo, familia: imgFamilia } as const;
+const modeIcon = { individual: Compass, familia: Users } as const;
+const modeImg = { individual: imgIndividual, familia: imgFamilia } as const;
 export const PLACE_IMG: Record<number, string> = { 1: placeTeatro, 2: placeDiana, 3: placeForo, 4: placePuente, 5: placeArco };
 
 export function Onboarding({ onStart }: { onStart: (name: string, mode: Mode) => void }) {
   const [name, setName] = useState("");
-  const [mode, setMode] = useState<Mode>("explorador");
+  const [mode, setMode] = useState<Mode>("individual");
   const current = MODES.find((m) => m.id === mode)!;
   return (
     <div className="animate-fade-in flex min-h-screen flex-col pb-8">
@@ -38,21 +37,21 @@ export function Onboarding({ onStart }: { onStart: (name: string, mode: Mode) =>
         </p>
 
         <p className="mb-3 mt-7 text-sm font-bold text-foreground">¿Quién participa?</p>
-        <div className="grid grid-cols-3 gap-2.5">
+        <div className="grid grid-cols-2 gap-3">
           {MODES.map((m) => {
             const active = mode === m.id;
             const Icon = modeIcon[m.id];
             return (
               <button key={m.id} onClick={() => setMode(m.id)}
-                className={`press relative flex flex-col items-center overflow-hidden rounded-3xl border-2 px-1.5 pb-3 pt-2 ${
+                className={`press relative flex flex-col items-center overflow-hidden rounded-3xl border-2 px-2 pb-3 pt-2 ${
                   active ? "border-primary bg-card shadow-glow" : "glass border-transparent"}`}>
                 {active && <span className="absolute right-2 top-2 grid h-5 w-5 place-items-center rounded-full bg-primary text-primary-foreground"><Check className="h-3 w-3" strokeWidth={3} /></span>}
                 <span className={`grid aspect-square w-full place-items-center rounded-2xl transition-colors ${active ? "bg-terra-soft" : "bg-secondary"}`}>
                   <img src={modeImg[m.id]} alt={m.label} width={816} height={816}
                     className={`h-full w-full object-contain p-1 transition-transform duration-300 ${active ? "scale-110" : ""}`} />
                 </span>
-                <span className="mt-2 flex items-center gap-1 text-center text-[13px] font-bold leading-tight text-foreground">
-                  <Icon className="h-3.5 w-3.5 shrink-0 text-primary" /> {m.id === "familia" ? "Familia" : m.label}
+                <span className="mt-2 flex items-center gap-1 text-center text-sm font-bold leading-tight text-foreground">
+                  <Icon className="h-4 w-4 shrink-0 text-primary" /> {m.label}
                 </span>
               </button>
             );

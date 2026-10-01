@@ -4,7 +4,9 @@ import { Crown, MessageCircle, Send, Star, Trophy, CheckCircle2 } from "lucide-r
 import { supabase } from "@/integrations/supabase/client";
 import { MODES, type Mode } from "@/lib/quest-data";
 
-const modeLabel = (m: string) => MODES.find((x) => x.id === m)?.label ?? m;
+const modeLabel = (m: string) =>
+  m === "explorador" || m === "arqueologo" ? "Individual"
+  : MODES.find((x) => x.id === m)?.label ?? m;
 
 function useRanking() {
   return useQuery({
