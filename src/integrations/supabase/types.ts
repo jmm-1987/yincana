@@ -14,7 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      quest_results: {
+        Row: {
+          comment: string | null
+          correct: number
+          created_at: string
+          id: string
+          mode: string
+          rating: number | null
+          score: number
+          skipped: number
+          team_name: string
+        }
+        Insert: {
+          comment?: string | null
+          correct: number
+          created_at?: string
+          id?: string
+          mode: string
+          rating?: number | null
+          score: number
+          skipped: number
+          team_name: string
+        }
+        Update: {
+          comment?: string | null
+          correct?: number
+          created_at?: string
+          id?: string
+          mode?: string
+          rating?: number | null
+          score?: number
+          skipped?: number
+          team_name?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
