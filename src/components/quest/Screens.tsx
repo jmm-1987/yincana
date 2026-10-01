@@ -4,69 +4,77 @@ import {
   Lightbulb, X, Ticket, Award, RotateCcw, Star, Loader2,
 } from "lucide-react";
 import { CHALLENGES, MODES, type Challenge, type Mode, type NodeStatus } from "@/lib/quest-data";
+import imgExplorador from "@/assets/mode-explorador.png";
+import imgArqueologo from "@/assets/mode-arqueologo.png";
+import imgFamilia from "@/assets/mode-familia.png";
+import placeTeatro from "@/assets/place-teatro.jpg";
+import placeDiana from "@/assets/place-diana.jpg";
+import placeForo from "@/assets/place-foro.jpg";
+import placePuente from "@/assets/place-puente.jpg";
+import placeArco from "@/assets/place-arco.jpg";
 
 const modeIcon = { explorador: Compass, arqueologo: Landmark, familia: Users } as const;
+const modeImg = { explorador: imgExplorador, arqueologo: imgArqueologo, familia: imgFamilia } as const;
+export const PLACE_IMG: Record<number, string> = { 1: placeTeatro, 2: placeDiana, 3: placeForo, 4: placePuente, 5: placeArco };
 
 export function Onboarding({ onStart }: { onStart: (name: string, mode: Mode) => void }) {
   const [name, setName] = useState("");
   const [mode, setMode] = useState<Mode>("explorador");
+  const current = MODES.find((m) => m.id === mode)!;
   return (
-    <div className="animate-fade-in flex min-h-screen flex-col px-5 pb-8 pt-10">
-      <div className="mb-2 inline-flex w-fit items-center gap-2 rounded-full bg-terra-soft px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">
-        <MapPin className="h-3.5 w-3.5" /> Mérida · Patrimonio UNESCO
+    <div className="animate-fade-in flex min-h-screen flex-col pb-8">
+      <div className="relative h-64 overflow-hidden rounded-b-[2.5rem] shadow-soft">
+        <img src={placeTeatro} alt="Teatro Romano de Mérida" width={1024} height={640} className="h-full w-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
+        <div className="absolute left-5 top-5 inline-flex items-center gap-2 rounded-full glass px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">
+          <MapPin className="h-3.5 w-3.5" /> Mérida · UNESCO
+        </div>
       </div>
-      <h1 className="mt-3 text-[2.6rem] font-semibold leading-[1.02] text-foreground">
-        Emerita <span className="italic text-primary">Quest</span>
-      </h1>
-      <p className="mt-3 text-lg text-muted-foreground">
-        Descubre <strong className="text-foreground">Augusta Emerita</strong> a tu ritmo: 5 monumentos, 5 retos y un premio final.
-      </p>
 
-      <div className="mt-8">
-        <p className="mb-3 text-sm font-bold text-foreground">Elige tu modo de juego</p>
-        <div className="grid gap-3">
+      <div className="-mt-14 relative px-5">
+        <h1 className="text-[2.7rem] font-semibold leading-[1] text-foreground">
+          Emerita <span className="italic text-primary">Quest</span>
+        </h1>
+        <p className="mt-3 text-lg text-muted-foreground">
+          Descubre <strong className="text-foreground">Augusta Emerita</strong> a tu ritmo: 5 monumentos, 5 retos y un premio final.
+        </p>
+
+        <p className="mb-3 mt-7 text-sm font-bold text-foreground">¿Quién participa?</p>
+        <div className="grid grid-cols-3 gap-2.5">
           {MODES.map((m) => {
-            const Icon = modeIcon[m.id];
             const active = mode === m.id;
+            const Icon = modeIcon[m.id];
             return (
-              <button
-                key={m.id}
-                onClick={() => setMode(m.id)}
-                className={`press flex items-center gap-4 rounded-2xl border-2 p-4 text-left ${
-                  active ? "border-primary bg-card shadow-glow" : "glass border-transparent"
-                }`}
-              >
-                <span className={`grid h-12 w-12 shrink-0 place-items-center rounded-xl ${active ? "bg-gradient-primary text-primary-foreground" : "bg-secondary text-primary"}`}>
-                  <Icon className="h-6 w-6" />
+              <button key={m.id} onClick={() => setMode(m.id)}
+                className={`press relative flex flex-col items-center overflow-hidden rounded-3xl border-2 px-1.5 pb-3 pt-2 ${
+                  active ? "border-primary bg-card shadow-glow" : "glass border-transparent"}`}>
+                {active && <span className="absolute right-2 top-2 grid h-5 w-5 place-items-center rounded-full bg-primary text-primary-foreground"><Check className="h-3 w-3" strokeWidth={3} /></span>}
+                <span className={`grid aspect-square w-full place-items-center rounded-2xl transition-colors ${active ? "bg-terra-soft" : "bg-secondary"}`}>
+                  <img src={modeImg[m.id]} alt={m.label} width={816} height={816}
+                    className={`h-full w-full object-contain p-1 transition-transform duration-300 ${active ? "scale-110" : ""}`} />
                 </span>
-                <span className="min-w-0 flex-1">
-                  <span className="block font-bold text-foreground">{m.label}</span>
-                  <span className="block text-sm text-muted-foreground">{m.desc}</span>
+                <span className="mt-2 flex items-center gap-1 text-center text-[13px] font-bold leading-tight text-foreground">
+                  <Icon className="h-3.5 w-3.5 shrink-0 text-primary" /> {m.label.replace("Viajero en ", "")}
                 </span>
-                {active && <Check className="h-5 w-5 shrink-0 text-primary" />}
               </button>
             );
           })}
         </div>
+        <p key={mode} className="animate-fade-in mt-3 rounded-2xl bg-gold-soft px-4 py-2.5 text-sm text-secondary-foreground">
+          <strong>{current.label}:</strong> {current.desc}
+        </p>
+
+        <label className="mt-6 block">
+          <span className="mb-2 block text-sm font-bold text-foreground">Nombre del explorador o equipo</span>
+          <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Ej: Los Legionarios"
+            className="glass w-full rounded-2xl px-4 py-4 text-base text-foreground outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-ring" />
+        </label>
+
+        <button onClick={() => onStart(name.trim() || "Viajero", mode)}
+          className="press mt-7 flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-primary py-4 text-lg font-bold text-primary-foreground shadow-glow">
+          <Play className="h-5 w-5 fill-current" /> Empezar la yincana
+        </button>
       </div>
-
-      <label className="mt-6 block">
-        <span className="mb-2 block text-sm font-bold text-foreground">Nombre del explorador o equipo</span>
-        <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Ej: Los Legionarios"
-          className="glass w-full rounded-2xl px-4 py-4 text-base text-foreground outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-ring"
-        />
-      </label>
-
-      <button
-        onClick={() => onStart(name.trim() || "Viajero", mode)}
-        className="press mt-auto flex items-center justify-center gap-2 rounded-2xl bg-gradient-primary py-4 text-lg font-bold text-primary-foreground shadow-glow"
-        style={{ marginTop: "2rem" }}
-      >
-        <Play className="h-5 w-5 fill-current" /> Empezar la yincana
-      </button>
     </div>
   );
 }
@@ -171,8 +179,13 @@ export function ChallengeModal({
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-foreground/30 backdrop-blur-sm animate-fade-in" onClick={onClose}>
       <div onClick={(e) => e.stopPropagation()}
-        className="animate-sheet-up max-h-[92vh] w-full max-w-md overflow-y-auto rounded-t-3xl bg-card px-5 pb-6 pt-3 shadow-soft">
-        <div className="mx-auto mb-3 h-1.5 w-12 rounded-full bg-border" />
+        className="animate-sheet-up max-h-[92vh] w-full max-w-md overflow-y-auto rounded-t-3xl bg-card px-5 pb-6 shadow-soft">
+        <div className="relative -mx-5 mb-4 h-48 overflow-hidden">
+          <img src={PLACE_IMG[c.id]} alt={c.name} width={1024} height={640} className="h-full w-full object-cover animate-scale-in" />
+          <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-foreground/30 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-card to-transparent" />
+          <div className="absolute left-1/2 top-2.5 h-1.5 w-12 -translate-x-1/2 rounded-full bg-card/80" />
+        </div>
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <span className="rounded-full bg-gold-soft px-2.5 py-1 text-xs font-bold text-gold">Parada {c.id} · {c.kind}</span>
