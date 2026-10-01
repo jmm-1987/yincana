@@ -35,7 +35,7 @@ export function Onboarding({ onStart }: { onStart: (name: string, mode: Mode) =>
           Emerita <span className="italic text-primary">Augusta</span>
         </h1>
         <p className="mt-3 text-lg text-muted-foreground">
-          Descubre <strong className="text-foreground">Augusta Emerita</strong> a tu ritmo: 5 monumentos, 5 retos y un premio final.
+          Descubre <strong className="text-foreground">Augusta Emerita</strong> a tu ritmo: 6 monumentos, 6 retos y un premio final.
         </p>
 
         <p className="mb-3 mt-7 text-sm font-bold text-foreground">¿Quién participa?</p>

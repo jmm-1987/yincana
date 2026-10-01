@@ -10,7 +10,7 @@ export const Route = createFileRoute("/")({
       { title: "Emerita Augusta: La Yincana de Mérida" },
       { name: "description", content: "Yincana para turistas por los monumentos romanos de Mérida: retos, puntos y recompensas." },
       { property: "og:title", content: "Emerita Augusta: La Yincana de Mérida" },
-      { property: "og:description", content: "Descubre Augusta Emerita a tu ritmo con 5 retos y un premio final." },
+      { property: "og:description", content: "Descubre Augusta Emerita a tu ritmo con 6 retos y un premio final." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
