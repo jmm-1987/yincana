@@ -283,7 +283,7 @@ export function Summary({
         <p className="mt-3 text-sm text-muted-foreground">Se otorga a</p>
         <p className="font-display text-3xl font-semibold italic text-primary">{name}</p>
         <p className="mt-2 text-sm text-muted-foreground">
-          por completar la yincana <strong className="text-foreground">Emerita Quest</strong> en modo {MODES.find((m) => m.id === mode)?.label}.
+          por completar la yincana <strong className="text-foreground">Emerita Augusta</strong> en modo {MODES.find((m) => m.id === mode)?.label}.
         </p>
         <p className="mt-4 text-xs text-muted-foreground">Mérida, {date}</p>
       </div>
