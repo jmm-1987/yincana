@@ -151,6 +151,7 @@ function MapNode({ c, i, status, onOpen }: { c: Challenge; i: number; status: No
       </button>
       <button disabled={status === "locked"} onClick={onOpen}
         className={`glass press min-w-0 max-w-[60%] rounded-xl px-3 py-2 ${left ? "text-left" : "text-right"} ${status === "locked" ? "opacity-60" : ""}`}>
+        <img src={PLACE_IMG[c.id]} alt="" loading="lazy" width={1024} height={640} className={`mb-1.5 h-14 w-full rounded-lg object-cover ${status === "locked" ? "grayscale" : ""}`} />
         <span className="block text-sm font-bold leading-tight text-foreground">{c.name}</span>
         <span className={`text-xs font-semibold ${status === "available" ? "text-primary" : status === "done" ? "text-success" : status === "skipped" ? "text-sea" : "text-muted-foreground"}`}>
           {label[status]}
