@@ -3,7 +3,7 @@ import {
   Compass, Users, Play, Lock, Check, SkipForward, Trophy,
   Lightbulb, X, Award, RotateCcw, Star, Loader2, Timer,
 } from "lucide-react";
-import { CHALLENGES, MODES, type Challenge, type Mode, type NodeStatus } from "@/lib/quest-data";
+import { CONCLUSION, MODES, type Challenge, type Mode, type NodeStatus } from "@/lib/quest-data";
 import { CommunityBoard, ShareResult, formatDuration } from "./Community";
 import imgIndividual from "@/assets/mode-explorador.png";
 import imgFamilia from "@/assets/mode-familia.png";
@@ -11,13 +11,19 @@ import placeTeatro from "@/assets/place-teatro.jpg";
 import placeDiana from "@/assets/place-diana.jpg";
 import placeForo from "@/assets/place-foro.jpg";
 import placePuente from "@/assets/place-puente.jpg";
-import placeArco from "@/assets/place-arco.jpg";
 import placeMitreo from "@/assets/place-mitreo.jpg";
+import placeAnfi from "@/assets/place-anfiteatro.jpg";
+import placeMuseo from "@/assets/place-museo.jpg";
+import placeParque from "@/assets/place-parque.jpg";
+import placeLoba from "@/assets/place-loba.jpg";
+import placePlaza from "@/assets/place-plaza.jpg";
+import mosaicImg from "@/assets/mosaic.jpg";
+import { MemoryGame } from "./MemoryGame";
 import { MosaicPuzzle } from "./MosaicPuzzle";
 
 const modeIcon = { individual: Compass, familia: Users } as const;
 const modeImg = { individual: imgIndividual, familia: imgFamilia } as const;
-export const PLACE_IMG: Record<number, string> = { 1: placeTeatro, 2: placeDiana, 3: placeForo, 4: placeMitreo, 5: placePuente, 6: placeArco };
+export const PLACE_IMG: Record<number, string> = { 1: placeTeatro, 2: placeAnfi, 3: placeMuseo, 4: placeForo, 5: placeDiana, 6: placeParque, 7: placeLoba, 8: placePuente, 9: placePlaza, 101: mosaicImg, 102: placeMitreo };
 
 export function Onboarding({ onStart }: { onStart: (name: string, mode: Mode) => void }) {
   const [name, setName] = useState("");
@@ -35,7 +41,7 @@ export function Onboarding({ onStart }: { onStart: (name: string, mode: Mode) =>
           Emerita <span className="italic text-primary">Augusta</span>
         </h1>
         <p className="mt-3 text-lg text-muted-foreground">
-          Descubre <strong className="text-foreground">Augusta Emerita</strong> a tu ritmo: 6 monumentos, 6 retos y un premio final.
+          Ayuda a <strong className="text-foreground">Julia</strong> a recuperar sus recuerdos recorriendo 9 lugares de Mérida.
         </p>
 
         <p className="mb-3 mt-7 text-sm font-bold text-foreground">¿Quién participa?</p>
@@ -81,9 +87,9 @@ export function Onboarding({ onStart }: { onStart: (name: string, mode: Mode) =>
 }
 
 export function RouteMap({
-  name, score, statuses, onOpen, onFinish,
+  name, score, statuses, route, onOpen, onFinish,
 }: {
-  name: string; score: number; statuses: NodeStatus[];
+  name: string; score: number; statuses: NodeStatus[]; route: Challenge[];
   onOpen: (i: number) => void; onFinish: () => void;
 }) {
   const finished = statuses.every((s) => s === "done" || s === "skipped");
@@ -99,20 +105,20 @@ export function RouteMap({
           <Star className="h-4 w-4 fill-current" /> {score}
         </div>
         <div className="col-span-2 h-2 overflow-hidden rounded-full bg-muted">
-          <div className="h-full rounded-full bg-gradient-gold transition-all duration-700" style={{ width: `${(progress / 5) * 100}%` }} />
+          <div className="h-full rounded-full bg-gradient-gold transition-all duration-700" style={{ width: `${(progress / route.length) * 100}%` }} />
         </div>
       </header>
 
       <h2 className="mt-6 text-2xl font-semibold text-foreground">Tu camino por Emerita</h2>
-      <p className="text-sm text-muted-foreground">{progress} de 5 paradas completadas</p>
+      <p className="text-sm text-muted-foreground">{progress} de {route.length} paradas completadas</p>
 
       <div className="relative mt-6">
-        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 500" preserveAspectRatio="none" aria-hidden>
-          <path d="M28 50 C 90 90, 90 110, 72 150 S 10 210, 28 250 S 90 310, 72 350 S 10 410, 28 450"
+        <svg className="absolute inset-0 h-full w-full" viewBox={`0 0 100 ${route.length * 100}`} preserveAspectRatio="none" aria-hidden>
+          <path d={route.map((_, i) => `${i === 0 ? "M" : "L"}${i % 2 === 0 ? 28 : 72} ${i * 100 + 50}`).join(" ")}
             fill="none" stroke="var(--border)" strokeWidth="1.4" strokeDasharray="3 3" vectorEffect="non-scaling-stroke" style={{ strokeWidth: 4 }} />
         </svg>
         <ol className="relative grid gap-0">
-          {CHALLENGES.map((c, i) => (
+          {route.map((c, i) => (
             <MapNode key={c.id} c={c} i={i} status={statuses[i] ?? "locked"} onOpen={() => onOpen(i)} />
           ))}
         </ol>
@@ -139,7 +145,7 @@ function MapNode({ c, i, status, onOpen }: { c: Challenge; i: number; status: No
     locked: "Bloqueado", available: "Disponible", done: "Completado", skipped: "Saltado",
   };
   const icon = status === "locked" ? <Lock className="h-6 w-6" /> : status === "done" ? <Check className="h-7 w-7" strokeWidth={3} />
-    : status === "skipped" ? <SkipForward className="h-6 w-6" /> : <span className="font-display text-2xl font-bold">{i + 1}</span>;
+    : status === "skipped" ? <SkipForward className="h-6 w-6" /> : <span className="font-display text-2xl font-bold">{c.step ?? "★"}</span>;
   return (
     <li className={`flex h-[100px] items-center gap-3 ${left ? "flex-row pl-[10%]" : "flex-row-reverse pr-[10%]"}`}>
       <button
@@ -175,7 +181,7 @@ export function ChallengeModal({
   const check = () => {
     if (sel === null) return;
     setState("checking");
-    setTimeout(() => setState(sel === c.answer ? "right" : "wrong"), c.kind === "Comprobación" ? 1100 : 450);
+    setTimeout(() => setState(sel === c.answer ? "right" : "wrong"), 450);
   };
 
   return (
@@ -190,7 +196,7 @@ export function ChallengeModal({
         </div>
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <span className="rounded-full bg-gold-soft px-2.5 py-1 text-xs font-bold text-gold">Parada {c.id} · {c.kind}</span>
+            <span className="rounded-full bg-gold-soft px-2.5 py-1 text-xs font-bold text-gold">{c.step ? `Paso ${c.step}` : "Minijuego"} · {c.kind}</span>
             <h3 className="mt-2 text-2xl font-semibold leading-tight text-foreground">{c.name}</h3>
           </div>
           <button onClick={onClose} aria-label="Cerrar" className="press grid h-10 w-10 shrink-0 place-items-center rounded-full bg-secondary text-foreground">
@@ -198,11 +204,16 @@ export function ChallengeModal({
           </button>
         </div>
 
+        {c.directions && (
+          <p className="mt-3 rounded-2xl bg-sea-soft p-4 text-sm leading-relaxed text-accent-foreground"><strong>Cómo llegar:</strong> {c.directions}</p>
+        )}
         <p className="mt-3 rounded-2xl bg-terra-soft p-4 text-[15px] leading-relaxed text-secondary-foreground">{c.story}</p>
 
         <p className="mt-5 font-bold text-foreground">{c.question}</p>
         {c.kind === "Puzle" ? (
-          <MosaicPuzzle size={mode === "familia" ? 3 : 4} onSolved={() => setState("right")} />
+          <MosaicPuzzle size={3} onSolved={() => setState("right")} />
+        ) : c.kind === "Memoria" ? (
+          <MemoryGame onSolved={() => setState("right")} />
         ) : (
         <div className="mt-3 grid gap-2.5">
           {c.options.map((o, i) => {
@@ -233,12 +244,12 @@ export function ChallengeModal({
         <div className="mt-5 grid gap-2.5">
           {state === "right" ? (
             <button onClick={() => onResolve("done")} className="press animate-scale-in flex items-center justify-center gap-2 rounded-2xl bg-success py-4 font-bold text-primary-foreground shadow-soft">
-              <Check className="h-5 w-5" /> {c.kind === "Puzle" ? "¡Mosaico completo! Continuar" : "¡Correcto! Continuar"}
+              <Check className="h-5 w-5" /> {c.kind === "Puzle" ? "¡Mosaico completo! Continuar" : c.kind === "Memoria" ? "¡Todas las parejas! Continuar" : "¡Correcto! Continuar"}
             </button>
           ) : (
-            c.kind === "Puzle" ? null : <button onClick={check} disabled={sel === null || state === "checking"}
+            c.kind === "Puzle" || c.kind === "Memoria" ? null : <button onClick={check} disabled={sel === null || state === "checking"}
               className="press flex items-center justify-center gap-2 rounded-2xl bg-gradient-primary py-4 font-bold text-primary-foreground shadow-glow disabled:opacity-50">
-              {state === "checking" ? <><Loader2 className="h-5 w-5 animate-spin" /> {c.kind === "Comprobación" ? "Verificando ubicación…" : "Comprobando…"}</> : "Comprobar respuesta"}
+              {state === "checking" ? <><Loader2 className="h-5 w-5 animate-spin" /> Comprobando…</> : "Comprobar respuesta"}
             </button>
           )}
           {state !== "right" && (
@@ -298,6 +309,11 @@ export function Summary({
         <p className="mt-4 text-xs text-muted-foreground">Mérida, {date}</p>
       </div>
 
+
+      <div className="mt-5 rounded-3xl bg-terra-soft p-5">
+        <p className="font-display text-xl font-semibold text-foreground">Conclusión final</p>
+        <p className="mt-2 text-[15px] leading-relaxed text-secondary-foreground">{CONCLUSION}</p>
+      </div>
 
       <ShareResult name={name} mode={mode} score={score} correct={ok} skipped={skipped} duration={duration} />
 
