@@ -10,7 +10,10 @@ Si un paso falla, resuélvelo antes de continuar.
 - 68 GB de disco libres y 1 GB de swap.
 - Nginx ya atiende los puertos 80 y 443.
 - El proyecto Python existente usa Gunicorn en el puerto 5000.
-- Supervisor está instalado; todavía no se ha comprobado qué procesos gestiona.
+- Supervisor gestiona `segurymat`, confirmado como `RUNNING`.
+- Nginx sirve `segurymat.jm2-tech.es` y `www.segurymat.jm2-tech.es` mediante `/etc/nginx/sites-enabled/segurymat`, con destino `127.0.0.1:5000`.
+- La web existente tiene HTTPS gestionado por Certbot. Comprueba el comando instalado y reutilízalo.
+- El sitio `/etc/nginx/sites-enabled/default` es el predeterminado para HTTP. Se conserva.
 - En la última comprobación no había Node.js ni npm. Si ya los instalaste, verifica su versión y omite la instalación.
 - El puerto 3000 estaba libre; vuelve a comprobarlo antes de usarlo.
 
@@ -48,7 +51,14 @@ nginx -t
 cp -a /etc/nginx "/root/nginx-antes-yincana-$(date +%Y%m%d-%H%M%S)"
 ```
 
-Anota el dominio de la aplicación Python para comprobarlo después del despliegue.
+Comprueba la aplicación Python antes del despliegue:
+
+```bash
+supervisorctl status segurymat
+curl -I https://segurymat.jm2-tech.es/
+```
+
+Anota su respuesta para compararla al terminar. Una redirección puede ser normal.
 No edites ni deshabilites sus archivos en `sites-enabled`.
 
 ## 3. Instalar Node.js 24
@@ -313,6 +323,11 @@ systemctl restart yincana
 
 5. Recarga la web y comprueba que el resultado sigue guardado.
 6. Comprueba la web Python y confirma que su puerto y servicio siguen funcionando.
+
+```bash
+supervisorctl status segurymat
+curl -I https://segurymat.jm2-tech.es/
+```
 
 ```bash
 ss -ltnp
