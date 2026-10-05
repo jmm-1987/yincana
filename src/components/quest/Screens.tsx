@@ -204,12 +204,17 @@ export function ChallengeModal({
           </button>
         </div>
 
-        {c.directions && (
-          <p className="mt-3 rounded-2xl bg-sea-soft p-4 text-sm leading-relaxed text-accent-foreground"><strong>Cómo llegar:</strong> {c.directions}</p>
+        {c.passage ? (
+          <p className="mt-3 whitespace-pre-line rounded-2xl bg-terra-soft p-4 text-[15px] leading-relaxed text-secondary-foreground">{c.passage}</p>
+        ) : (
+          <>
+            {c.directions && (
+              <p className="mt-3 rounded-2xl bg-sea-soft p-4 text-sm leading-relaxed text-accent-foreground"><strong>Cómo llegar:</strong> {c.directions}</p>
+            )}
+            <p className="mt-3 rounded-2xl bg-terra-soft p-4 text-[15px] leading-relaxed text-secondary-foreground">{c.story}</p>
+            <p className="mt-5 font-bold text-foreground">{c.question}</p>
+          </>
         )}
-        <p className="mt-3 rounded-2xl bg-terra-soft p-4 text-[15px] leading-relaxed text-secondary-foreground">{c.story}</p>
-
-        <p className="mt-5 font-bold text-foreground">{c.question}</p>
         {c.kind === "Puzle" ? (
           <MosaicPuzzle size={3} onSolved={() => setState("right")} />
         ) : c.kind === "Memoria" ? (
