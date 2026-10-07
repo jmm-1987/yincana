@@ -43,40 +43,40 @@
 
 :root {
   --radius: 1rem;
-  --background: oklch(0.985 0.003 90);
-  --foreground: oklch(0.25 0.03 40);
+  --background: #f6f7f8;
+  --foreground: #20344a;
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.25 0.03 40);
+  --card-foreground: #20344a;
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.25 0.03 40);
-  --primary: oklch(0.58 0.15 40); /* terracota #C85A32 */
-  --primary-foreground: oklch(0.99 0.005 80);
-  --terra-soft: oklch(0.95 0.03 45);
-  --secondary: oklch(0.96 0.01 70);
-  --secondary-foreground: oklch(0.3 0.04 40);
-  --muted: oklch(0.96 0.006 80);
-  --muted-foreground: oklch(0.52 0.025 50);
-  --accent: oklch(0.95 0.03 230);
-  --accent-foreground: oklch(0.4 0.12 237);
-  --gold: oklch(0.66 0.16 62); /* #D97706 */
-  --gold-soft: oklch(0.95 0.05 80);
-  --sea: oklch(0.59 0.14 237); /* #0284C7 */
-  --sea-soft: oklch(0.95 0.03 230);
-  --success: oklch(0.6 0.13 150);
-  --success-soft: oklch(0.95 0.04 150);
+  --popover-foreground: #20344a;
+  /* Verde inspirado en la referencia, oscurecido para texto y botones legibles. */
+  --primary: #008a40;
+  --primary-foreground: #ffffff;
+  --terra-soft: #eaf7ee;
+  --secondary: #f0f3f5;
+  --secondary-foreground: #294158;
+  --muted: #edf0f2;
+  --muted-foreground: #5e6b78;
+  --accent: #edf2f7;
+  --accent-foreground: #294b6b;
+  /* Los tokens de recompensas conservan sus nombres para los componentes. */
+  --gold: #008a40;
+  --gold-soft: #eaf7ee;
+  --sea: #294b6b;
+  --sea-soft: #edf2f7;
+  --success: #008a40;
+  --success-soft: #eaf7ee;
   --destructive: oklch(0.58 0.2 27);
   --destructive-foreground: oklch(0.99 0 0);
-  --border: oklch(0.91 0.012 70);
-  --input: oklch(0.91 0.012 70);
-  --ring: oklch(0.58 0.15 40);
+  --border: #dce2e6;
+  --input: #dce2e6;
+  --ring: #008a40;
 
-  --gradient-hero: radial-gradient(120% 80% at 10% 0%, oklch(0.94 0.05 50) 0%, transparent 55%),
-    radial-gradient(90% 70% at 100% 20%, oklch(0.94 0.04 230) 0%, transparent 60%),
-    var(--background);
-  --gradient-primary: linear-gradient(135deg, oklch(0.62 0.15 45), oklch(0.54 0.15 35));
-  --gradient-gold: linear-gradient(135deg, oklch(0.76 0.15 75), oklch(0.64 0.16 58));
-  --shadow-soft: 0 10px 30px -12px oklch(0.4 0.08 40 / 0.18);
-  --shadow-glow: 0 12px 28px -10px oklch(0.58 0.15 40 / 0.45);
+  --gradient-hero: linear-gradient(180deg, #ffffff 0%, var(--background) 45%);
+  --gradient-primary: linear-gradient(135deg, #008a40, #007738);
+  --gradient-gold: var(--gradient-primary);
+  --shadow-soft: 0 10px 30px -12px rgb(32 52 74 / 0.14);
+  --shadow-glow: 0 12px 28px -10px rgb(0 176 80 / 0.3);
 }
 
 @layer base {
@@ -112,8 +112,8 @@
   100% { transform: translate3d(var(--dx), 105vh, 0) rotate(720deg); opacity: 0.9; }
 }
 @keyframes node-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 oklch(0.58 0.15 40 / 0.45); }
-  50% { box-shadow: 0 0 0 14px oklch(0.58 0.15 40 / 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgb(0 176 80 / 0.4); }
+  50% { box-shadow: 0 0 0 14px rgb(0 176 80 / 0); }
 }
 @keyframes sheet-up {
   from { transform: translateY(100%); }

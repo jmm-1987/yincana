@@ -79,7 +79,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "application-name", content: "Emerita Augusta" },
-      { name: "theme-color", content: "#8a3c2c" },
+      { name: "theme-color", content: "#008a40" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -92,7 +92,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.svg?v=2", type: "image/svg+xml" },
+      { rel: "icon", href: "/favicon.svg?v=3", type: "image/svg+xml" },
       { rel: "alternate icon", href: "/favicon.ico?v=2", type: "image/x-icon" },
     ],
   }),

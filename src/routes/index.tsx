@@ -60,7 +60,7 @@ function Index() {
   };
 
   return (
-    <main className="mx-auto min-h-screen max-w-md">
+    <main className="mx-auto min-h-screen w-full max-w-md md:max-w-3xl lg:max-w-6xl">
       {confetti > 0 && <Confetti key={confetti} />}
       {screen === "intro" && (
         <Onboarding

@@ -30,14 +30,14 @@ export function Onboarding({ onStart }: { onStart: (name: string, mode: Mode) =>
   const [mode, setMode] = useState<Mode>("individual");
   const current = MODES.find((m) => m.id === mode)!;
   return (
-    <div className="animate-fade-in flex min-h-screen flex-col pb-8">
-      <div className="relative h-64 overflow-hidden rounded-b-[2.5rem] shadow-soft">
+    <div className="animate-fade-in flex min-h-screen flex-col pb-8 lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-10 lg:px-8 lg:pt-10">
+      <div className="relative h-64 overflow-hidden rounded-b-[2.5rem] shadow-soft md:h-80 lg:h-[640px] lg:rounded-[2.5rem]">
         <img src={placeTeatro} alt="Teatro Romano de Mérida" width={1024} height={640} className="h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent lg:hidden" />
       </div>
 
-      <div className="-mt-14 relative px-5">
-        <h1 className="text-[2.7rem] font-semibold leading-[1] text-foreground">
+      <div className="-mt-14 relative px-5 md:px-8 lg:mt-0 lg:px-0 lg:py-4">
+        <h1 className="text-[2.7rem] font-semibold leading-[1] text-foreground md:text-5xl lg:text-6xl">
           Emerita <span className="italic text-primary">Augusta</span>
         </h1>
         <p className="mt-3 text-lg text-muted-foreground">
@@ -56,7 +56,7 @@ export function Onboarding({ onStart }: { onStart: (name: string, mode: Mode) =>
                 {active && <span className="absolute right-2 top-2 grid h-5 w-5 place-items-center rounded-full bg-primary text-primary-foreground"><Check className="h-3 w-3" strokeWidth={3} /></span>}
                 <span className={`grid aspect-square w-full place-items-center rounded-2xl transition-colors ${active ? "bg-terra-soft" : "bg-secondary"}`}>
                   <img src={modeImg[m.id]} alt={m.label} width={816} height={816}
-                    className={`h-full w-full object-contain p-1 transition-transform duration-300 ${active ? "scale-110" : ""}`} />
+                    className={`h-full w-full max-w-48 object-contain p-1 transition-transform duration-300 ${active ? "scale-110" : ""}`} />
                 </span>
                 <span className="mt-2 flex items-center gap-1 text-center text-sm font-bold leading-tight text-foreground">
                   <Icon className="h-4 w-4 shrink-0 text-primary" /> {m.label}
@@ -80,6 +80,8 @@ export function Onboarding({ onStart }: { onStart: (name: string, mode: Mode) =>
           <Play className="h-5 w-5 fill-current" /> Empezar la yincana
         </button>
 
+      </div>
+      <div className="px-5 md:px-8 lg:col-span-2 lg:px-0">
         <CommunityBoard />
       </div>
     </div>
@@ -95,7 +97,7 @@ export function RouteMap({
   const finished = statuses.every((s) => s === "done" || s === "skipped");
   const progress = statuses.filter((s) => s === "done" || s === "skipped").length;
   return (
-    <div className="animate-fade-in min-h-screen px-5 pb-10 pt-6">
+    <div className="animate-fade-in min-h-screen px-5 pb-10 pt-6 md:px-8 lg:pt-10">
       <header className="glass sticky top-3 z-10 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-2xl px-4 py-3">
         <div className="min-w-0">
           <p className="text-xs font-semibold text-muted-foreground">Ruta de</p>
@@ -113,11 +115,11 @@ export function RouteMap({
       <p className="text-sm text-muted-foreground">{progress} de {route.length} paradas completadas</p>
 
       <div className="relative mt-6">
-        <svg className="absolute inset-0 h-full w-full" viewBox={`0 0 100 ${route.length * 100}`} preserveAspectRatio="none" aria-hidden>
+        <svg className="absolute inset-0 h-full w-full md:hidden" viewBox={`0 0 100 ${route.length * 100}`} preserveAspectRatio="none" aria-hidden>
           <path d={route.map((_, i) => `${i === 0 ? "M" : "L"}${i % 2 === 0 ? 28 : 72} ${i * 100 + 50}`).join(" ")}
             fill="none" stroke="var(--border)" strokeWidth="1.4" strokeDasharray="3 3" vectorEffect="non-scaling-stroke" style={{ strokeWidth: 4 }} />
         </svg>
-        <ol className="relative grid gap-0">
+        <ol className="relative grid gap-0 md:grid-cols-2 md:gap-5 lg:grid-cols-3">
           {route.map((c, i) => (
             <MapNode key={c.id} c={c} i={i} status={statuses[i] ?? "locked"} onOpen={() => onOpen(i)} />
           ))}
@@ -147,18 +149,18 @@ function MapNode({ c, i, status, onOpen }: { c: Challenge; i: number; status: No
   const icon = status === "locked" ? <Lock className="h-6 w-6" /> : status === "done" ? <Check className="h-7 w-7" strokeWidth={3} />
     : status === "skipped" ? <SkipForward className="h-6 w-6" /> : <span className="font-display text-2xl font-bold">{c.step ?? "★"}</span>;
   return (
-    <li className={`flex h-[100px] items-center gap-3 ${left ? "flex-row pl-[10%]" : "flex-row-reverse pr-[10%]"}`}>
+    <li className={`flex h-[100px] items-center gap-3 md:h-auto md:flex-col md:items-stretch md:rounded-3xl md:border md:border-border md:bg-card md:p-5 md:shadow-soft ${left ? "flex-row pl-[10%]" : "flex-row-reverse pr-[10%]"} md:pl-5 md:pr-5`}>
       <button
         disabled={status === "locked"}
         onClick={onOpen}
         aria-label={c.name}
-        className={`press grid h-16 w-16 shrink-0 place-items-center rounded-full border-4 border-card shadow-soft disabled:cursor-not-allowed ${styles[status]}`}
+        className={`press grid h-16 w-16 shrink-0 place-items-center rounded-full border-4 border-card shadow-soft disabled:cursor-not-allowed md:self-start ${styles[status]}`}
       >
         {icon}
       </button>
       <button disabled={status === "locked"} onClick={onOpen}
-        className={`glass press min-w-0 max-w-[60%] rounded-xl px-3 py-2 ${left ? "text-left" : "text-right"} ${status === "locked" ? "opacity-60" : ""}`}>
-        <img src={PLACE_IMG[c.id]} alt="" loading="lazy" width={1024} height={640} className={`mb-1.5 h-14 w-full rounded-lg object-cover ${status === "locked" ? "grayscale" : ""}`} />
+        className={`glass press min-w-0 max-w-[60%] rounded-xl px-3 py-2 md:w-full md:max-w-none md:text-left ${left ? "text-left" : "text-right"} ${status === "locked" ? "opacity-60" : ""}`}>
+        <img src={PLACE_IMG[c.id]} alt="" loading="lazy" width={1024} height={640} className={`mb-1.5 h-14 w-full rounded-lg object-cover md:mb-3 md:h-36 ${status === "locked" ? "grayscale" : ""}`} />
         <span className="block text-sm font-bold leading-tight text-foreground">{c.name}</span>
         <span className={`text-xs font-semibold ${status === "available" ? "text-primary" : status === "done" ? "text-success" : status === "skipped" ? "text-sea" : "text-muted-foreground"}`}>
           {label[status]}
@@ -185,10 +187,10 @@ export function ChallengeModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-foreground/30 backdrop-blur-sm animate-fade-in" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-foreground/30 backdrop-blur-sm animate-fade-in md:items-center md:p-6" onClick={onClose}>
       <div onClick={(e) => e.stopPropagation()}
-        className="animate-sheet-up max-h-[92vh] w-full max-w-md overflow-y-auto rounded-t-3xl bg-card px-5 pb-6 shadow-soft">
-        <div className="relative -mx-5 mb-4 h-48 overflow-hidden">
+        className="animate-sheet-up max-h-[92vh] w-full max-w-md overflow-y-auto rounded-t-3xl bg-card px-5 pb-6 shadow-soft md:max-w-2xl md:rounded-3xl md:px-8 md:pb-8">
+        <div className="relative -mx-5 mb-4 h-48 overflow-hidden md:-mx-8 md:h-64">
           <img src={PLACE_IMG[c.id]} alt={c.name} width={1024} height={640} className="h-full w-full object-cover animate-scale-in" />
           <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-foreground/30 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-card to-transparent" />
@@ -276,7 +278,7 @@ export function Summary({
   const skipped = statuses.filter((s) => s === "skipped").length;
   const date = new Date().toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" });
   return (
-    <div className="animate-fade-in min-h-screen px-5 pb-10 pt-10">
+    <div className="animate-fade-in mx-auto min-h-screen max-w-3xl px-5 pb-10 pt-10 md:px-8 md:pt-14">
       <div className="text-center">
         <div className="mx-auto grid h-20 w-20 place-items-center rounded-full bg-gradient-gold text-primary-foreground shadow-glow animate-scale-in">
           <Trophy className="h-10 w-10" />

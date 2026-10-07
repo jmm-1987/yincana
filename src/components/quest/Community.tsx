@@ -40,7 +40,7 @@ export function CommunityBoard() {
   ];
 
   return (
-    <section className="mt-10 grid gap-6">
+    <section className="mt-10 grid gap-6 md:grid-cols-2 md:items-start lg:gap-10">
       <div className="glass rounded-3xl p-5">
         <h2 className="flex items-center gap-2 text-xl font-semibold text-foreground">
           <Trophy className="h-5 w-5 text-gold" /> Ranking de legiones
