@@ -74,11 +74,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Emerita Augusta" },
-      { name: "description", content: "La yincana de Mérida para turistas." },
+      { title: "Yincanas · Federación Extremeña de Alzheimer" },
+      { name: "description", content: "Yincanas por Extremadura para sensibilizar sobre el Alzheimer jugando." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "application-name", content: "Emerita Augusta" },
+      { name: "application-name", content: "Yincanas · Federación Extremeña de Alzheimer" },
       { name: "theme-color", content: "#008a40" },
     ],
     links: [

@@ -1,0 +1,50 @@
+﻿[
+  {
+    "id": "caceres",
+    "source": "https://commons.wikimedia.org/wiki/File:Plaza_mayor_de_C%C3%A1ceres.jpg",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "author": "Elemaki",
+    "title": "File:Plaza mayor de Cáceres.jpg",
+    "license": "CC BY-SA 3.0"
+  },
+  {
+    "id": "hervas",
+    "source": "https://commons.wikimedia.org/wiki/File:HERVAS,_BARRIO_JUDIO.jpg",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "author": "MRuedaC",
+    "title": "File:HERVAS, BARRIO JUDIO.jpg",
+    "license": "CC BY-SA 4.0"
+  },
+  {
+    "id": "badajoz",
+    "source": "https://commons.wikimedia.org/wiki/File:Plaza_Alta,_Badajoz,_Espa%C3%B1a,_2020-07-22,_DD_35.jpg",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "author": "Diego Delso",
+    "title": "File:Plaza Alta, Badajoz, España, 2020-07-22, DD 35.jpg",
+    "license": "CC BY-SA 4.0"
+  },
+  {
+    "id": "don-benito",
+    "source": "https://commons.wikimedia.org/wiki/File:Don_Benito_-_Iglesia_de_Santiago_Ap%C3%B3stol_01.jpg",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "author": "Zarateman",
+    "title": "File:Don Benito - Iglesia de Santiago Apóstol 01.jpg",
+    "license": "CC0"
+  },
+  {
+    "id": "plasencia",
+    "source": "https://commons.wikimedia.org/wiki/File:Fachada_de_la_Catedral_Nueva_de_Plasencia.jpg",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+    "author": "Ángel M. Felicísimo",
+    "title": "File:Fachada de la Catedral Nueva de Plasencia.jpg",
+    "license": "CC BY 4.0"
+  },
+  {
+    "id": "trujillo",
+    "source": "https://commons.wikimedia.org/wiki/File:Plaza_Mayor_de_Trujillo_-_05.jpg",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "author": "Carlos Delgado",
+    "title": "File:Plaza Mayor de Trujillo - 05.jpg",
+    "license": "CC BY-SA 4.0"
+  }
+]
